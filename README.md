@@ -17,9 +17,9 @@ The analysis can help answer questions such as:
 | File | Purpose |
 | --- | --- |
 | [`title_and_year_match.sql`](title_and_year_match.sql) | Lists matched titles with content type, release year, IMDb score, IMDb vote count, and Netflix's `listed_in` value. |
-| [`tv_movie_totalvotes_avgrating.sql`](tv_movie_totalvotes_avgrating.sql) | Groups matched rows by Netflix content type and calculates average IMDb score and row count. |
+| [`avg_imdb_rating_and_title_count_by_type.sql`](avg_imdb_rating_and_title_count_by_type.sql) | Groups matched rows by Netflix content type and calculates average IMDb score and row count. |
 | [`titles_by_mentioned_genre.sql`](titles_by_mentioned_genre.sql) | Groups matched rows by the full Netflix `listed_in` value and calculates average IMDb score and row count. |
-| [`rating_vs_popularity_normalized.sql`](rating_vs_popularity_normalized.sql) | Returns IMDb scores and vote counts for matched rows. Despite its filename, the current query does not normalize either measure or calculate a rating-versus-popularity comparison. |
+| [`imdb_rating_and_vote_counts.sql`](imdb_rating_and_vote_counts.sql) | Returns IMDb scores and vote counts for matched rows. |
 
 ## Data and matching
 
@@ -56,8 +56,8 @@ The queries use fully qualified table names, so they can be run directly when yo
 ## Interpretation notes and opportunities
 
 - `titles_by_mentioned_genre.sql` groups by the entire `listed_in` field. If that field contains several comma-separated categories, the query treats the combination as one group rather than splitting it into individual genres.
-- `tv_movie_totalvotes_avgrating.sql` counts joined rows with `COUNT(*)`; it does not sum or report IMDb vote totals, despite the filename.
-- `rating_vs_popularity_normalized.sql` currently returns raw rating and vote values. It does not define a popularity measure or normalize values.
+- `avg_imdb_rating_and_title_count_by_type.sql` counts joined rows with `COUNT(*)`. It reports the number of matched rows, not necessarily unique titles.
+- `imdb_rating_and_vote_counts.sql` returns raw rating and vote values. It does not define a popularity measure or normalize values.
 - The joins use exact title-and-year equality after basic text cleanup. More robust matching could account for alternate titles, release-year differences, duplicate records, and content type.
 - The current queries do not document data provenance, refresh dates, or query results. Add these details when they are known.
 
@@ -65,6 +65,5 @@ The queries use fully qualified table names, so they can be run directly when yo
 
 1. Validate the table schemas and inspect duplicate title/year combinations.
 2. Decide how to handle multiple category values in `listed_in`.
-3. Rename or update the two queries whose filenames do not describe their current calculations.
-4. Define a popularity metric and normalization method before comparing popularity with ratings.
-5. Record a few key findings, with result dates and caveats, in this README.
+3. Define a popularity metric and normalization method before comparing popularity with ratings.
+4. Record a few key findings, with result dates and caveats, in this README.
